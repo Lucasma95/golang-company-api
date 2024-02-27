@@ -1,0 +1,184 @@
+basePath: /api
+definitions:
+  github_com_Lucasma95_golang-company-api_src_api_core_entities.Company:
+    properties:
+      country:
+        $ref: '#/definitions/github_com_Lucasma95_golang-company-api_src_api_core_entities.Country'
+      countryName:
+        type: string
+      createdAt:
+        type: string
+      deletedAt:
+        $ref: '#/definitions/gorm.DeletedAt'
+      description:
+        type: string
+      id:
+        type: string
+      name:
+        type: string
+      updatedAt:
+        type: string
+    type: object
+  github_com_Lucasma95_golang-company-api_src_api_core_entities.CompanyDTO:
+    properties:
+      continent:
+        type: string
+      country_name:
+        type: string
+      description:
+        type: string
+      id:
+        type: string
+      name:
+        type: string
+    type: object
+  github_com_Lucasma95_golang-company-api_src_api_core_entities.Country:
+    properties:
+      continent:
+        type: string
+      name:
+        type: string
+    type: object
+  github_com_Lucasma95_golang-company-api_src_api_http_contracts_company.CreateCompanyRequest:
+    properties:
+      country_name:
+        type: string
+      description:
+        type: string
+      name:
+        type: string
+    required:
+    - name
+    type: object
+  github_com_Lucasma95_golang-company-api_src_api_http_contracts_country.CreateCountryRequest:
+    properties:
+      continent:
+        type: string
+      name:
+        type: string
+    required:
+    - name
+    type: object
+  gorm.DeletedAt:
+    properties:
+      time:
+        type: string
+      valid:
+        description: Valid is true if Time is not NULL
+        type: boolean
+    type: object
+info:
+  contact: {}
+  title: golang-company-api
+  version: "1.0"
+paths:
+  /api/v1/company/continent/{continent}:
+    get:
+      description: This endpoint allows you to get a company by continent
+      parameters:
+      - description: continent
+        in: path
+        name: command
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/github_com_Lucasma95_golang-company-api_src_api_core_entities.CompanyDTO'
+            type: array
+        "500":
+          description: Internal Server Error
+          schema: {}
+      summary: Get company
+      tags:
+      - Company
+  /api/v1/company/country/{country}:
+    get:
+      description: This endpoint allows you to get a company by id
+      parameters:
+      - description: company_id
+        in: path
+        name: command
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/github_com_Lucasma95_golang-company-api_src_api_core_entities.CompanyDTO'
+            type: array
+        "500":
+          description: Internal Server Error
+          schema: {}
+      summary: Get company
+      tags:
+      - Company
+  /company:
+    post:
+      description: This endpoint allows you to create a company
+      parameters:
+      - description: Request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_Lucasma95_golang-company-api_src_api_http_contracts_company.CreateCompanyRequest'
+      responses:
+        "201":
+          description: Created
+        "500":
+          description: Internal Server Error
+      summary: Create Company
+      tags:
+      - Company
+  /country:
+    post:
+      description: This endpoint allows you to create a country
+      parameters:
+      - description: Request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_Lucasma95_golang-company-api_src_api_http_contracts_country.CreateCountryRequest'
+      responses:
+        "201":
+          description: Created
+        "500":
+          description: Internal Server Error
+      summary: Create Country
+      tags:
+      - Country
+  /health:
+    get:
+      operationId: health
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+      summary: This endpoint is used to verify if the api is running
+  /subscription/config/{company_id}:
+    get:
+      description: This endpoint allows you to get a company by id
+      parameters:
+      - description: company_id
+        in: path
+        name: command
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_Lucasma95_golang-company-api_src_api_core_entities.Company'
+        "500":
+          description: Internal Server Error
+          schema: {}
+      summary: Get company
+      tags:
+      - Company
+swagger: "2.0"
